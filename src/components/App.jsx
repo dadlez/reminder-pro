@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addReminder } from '../actions';
+import { bindActionCreators } from 'redux';
 
 class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			text: ''
+		}
+	}
+
+	addReminder() {
+		// console.log("this", this);
+		this.props.addReminder(this.state.text)
+	}
+
 	render() {
 		return(
 			<div className='App'>
@@ -12,11 +27,13 @@ class App extends Component {
 						<input
 							className='form-controll'
 							placeholder='wpisz zadanie'
+							onChange={event => this.setState({text: event.target.value})}
 						/>
 					</div>
 					<button
 						type='button'
 						className='btn btn-success'
+						onClick={() => this.addReminder()}
 					>
 						Dodaj
 					</button>
@@ -26,4 +43,8 @@ class App extends Component {
 	}
 }
 
-export default App;
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({addReminder}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(App);
